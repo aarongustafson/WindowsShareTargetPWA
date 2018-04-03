@@ -1,12 +1,14 @@
 (function(window, document, Windows){
 
   let addWinJS = new Promise((resolve, reject) => {
+    console.log('adding scripts');
     var script = document.createElement('script');
     script.src = '//Microsoft.WinJS.2.0/js/base.js';
     document.body.appendChild(script.cloneNode(true));
   
     script.src = '//Microsoft.WinJS.2.0/js/ui.js';
     document.body.appendChild(script);
+    console.log('WinJS added');
   });
   
   function initialize()
@@ -16,6 +18,7 @@
       WinJS.Application.addEventListener("shareready", shareReady, false);
       WinJS.Application.start();
     });
+    console.log('Initialized');
   }
 
   function activatedHandler(e)
