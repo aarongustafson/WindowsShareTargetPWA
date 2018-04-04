@@ -85,12 +85,16 @@
       data.getStorageItemsAsync()
         .then(function (storageItems) {
           obj.files = [];
-
-          var length = storageItems.size;
-          while ( length-- )
-          {
-            obj.files.push( storageItems.getAt(length).name );
-          }
+          
+          await Promise.all(
+            storageItems.map(async (file) => {
+              const contents = await file.openReadAsync().done(function (bitmapStream) { 
+                if (bitmapStream) { 
+                  obj.files.push( URL.createObjectURL(bitmapStream, { oneTimeOnly: true }) );
+                }
+              });
+            })
+          );
 
           $output.innerHTML += JSON.stringify(obj) + '\r\n';
         });
