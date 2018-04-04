@@ -4,8 +4,12 @@
   var app = Windows.UI.WebUI.WebUIApplication;
   // var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
   // app.addEventListener("sharetargetactivated", shareHandler);
-  app.addEventListener("shareactivated", shareHandler);
-  $output.innerHTML += 'shareactivated event handled\r\n';
+  app.addEventListener("activated", function(){
+    $output.innerHTML += 'activated event handled\r\n';
+    app.addEventListener("shareactivated", shareHandler);
+    $output.innerHTML += 'shareactivated event handled\r\n';
+  });
+  
   
   function shareHandler(e) {
     $output.innerHTML += 'Handling the share\r\n';
