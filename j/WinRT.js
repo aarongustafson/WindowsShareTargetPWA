@@ -1,9 +1,14 @@
 (function(window, document, Windows){
 
+  $output.innerHTML += 'Getting the dataTransferManager\r\n';
   var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
+  console.log(dataTransferManager);
   dataTransferManager.addEventListener("datarequested", shareHandler);
+  $output.innerHTML += 'datarequested event handled\r\n';
   
   function shareHandler(e) {
+    $output.innerHTML += 'Handling the share\r\n';
+    console.log(e);
     var data = e.request.data,
         obj = {
           title: data.properties.title,
