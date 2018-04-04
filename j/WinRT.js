@@ -1,6 +1,6 @@
 (function(window, document, Windows){
 
-  $output.innerHTML += 'Getting the dataTransferManager\r\n';
+  $output.innerHTML += 'Setting up the application\r\n';
   var app = Windows.UI.WebUI.WebUIApplication,
       ActivationKind = Windows.ApplicationModel.Activation.ActivationKind,
       StandardDataFormats = Windows.ApplicationModel.DataTransfer.StandardDataFormats;
@@ -18,7 +18,6 @@
   
   
   function shareHandler(e) {
-    console.log(e);
     var data = e.request.data,
         obj = {
           title: data.properties.title,
