@@ -66,7 +66,7 @@
             obj.weblink = webLink.rawUri;
           },
           function (e) { 
-            $output.innerHTML += 'Error retrieving weblink data'
+            $output.innerHTML += 'Error retrieving weblink data';
             console.log(e); 
           });
     } 
@@ -82,12 +82,12 @@
                   } 
                 },
                 function (e) { 
-                  $output.innerHTML += 'Error reading image stream'
+                  $output.innerHTML += 'Error reading image stream';
                   console.log(e); 
                 }); 
           },
           function (e) { 
-            $output.innerHTML += 'Error retrieving image data'
+            $output.innerHTML += 'Error retrieving image data';
             console.log(e);
           }); 
     }
