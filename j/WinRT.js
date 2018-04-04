@@ -9,6 +9,8 @@
     script.src = '//Microsoft.WinJS.2.0/js/ui.js';
     document.body.appendChild(script);
     $output.innerHTML += 'WinJS added\r\n';
+
+    resolve();
   });
   
   function initialize()
