@@ -19,6 +19,7 @@
       $output.innerHTML += 'Adding events\r\n';
       WinJS.Application.addEventListener("activated", activatedHandler, false);
       WinJS.Application.addEventListener("shareready", shareReady, false);
+      $output.innerHTML += 'Events added, starting the app\r\n';
       WinJS.Application.start();
       $output.innerHTML += 'Started the application\r\n';
     });
