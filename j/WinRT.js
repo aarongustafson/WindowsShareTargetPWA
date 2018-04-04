@@ -19,7 +19,7 @@
 
   function shareHandler( e )
   {
-    var data = e.request.data,
+    var data = e.shareOperation.data,
         obj = {
           title: data.properties.title,
           description: data.properties.description
