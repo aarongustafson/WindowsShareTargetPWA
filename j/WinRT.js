@@ -81,24 +81,29 @@
     }
 
     if (data.contains(StandardDataFormats.storageItems))
-    { 
+    {
       data.getStorageItemsAsync()
         .then(function (storageItems) {
-          obj.files = [];
-          
-          await Promise.all(
-            storageItems.map(async (file) => {
-              const contents = await file.openReadAsync().done(function (bitmapStream) { 
-                if (bitmapStream) { 
-                  obj.files.push( URL.createObjectURL(bitmapStream, { oneTimeOnly: true }) );
-                }
-              });
-            })
-          );
+          var blobs = [];
+          const files = storageItems.map(async (file) => {
+              
+            await file.openReadAsync()
+                .done(bitmapStream => { 
+                    console.log('bitmapStream',bitmapStream);
+                    if (bitmapStream) { 
+                        blob_url = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
+                    }
+                    console.log('blob_url', blob_url);
+                    blobs.push(blob_url);
+                });
+          });
 
-          $output.innerHTML += JSON.stringify(obj) + '\r\n';
+          Promise.all(files)
+            .then(function(){
+              obj.files = files;
+              $output.innerHTML += JSON.stringify(obj) + '\r\n';
+            });
         });
-    }
 
   }
 
