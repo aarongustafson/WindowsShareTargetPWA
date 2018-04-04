@@ -1,23 +1,27 @@
 (function(window, document, Windows){
 
   $output.innerHTML += 'Setting up the application\r\n';
-  var app = Windows.UI.WebUI.WebUIApplication,
+
+  var App = Windows.UI.WebUI.WebUIApplication,
       ActivationKind = Windows.ApplicationModel.Activation.ActivationKind,
       StandardDataFormats = Windows.ApplicationModel.DataTransfer.StandardDataFormats;
   
-  app.addEventListener("activated", function(e){
+  App.addEventListener('activated',  activationHandler, false);
+  $output.innerHTML += 'Listening for activation\r\n';
+  
+  function activationHandler( e )
+  {
     $output.innerHTML += 'App activated\r\n';
-    console.log(e);
-    
+    console.log( 'Activation Event', e );
     if ( e.kind == ActivationKind.shareTarget )
     {
       $output.innerHTML += 'Handling the share\r\n';
       shareHandler(e);
     }
-  });
-  
-  
-  function shareHandler(e) {
+  }
+
+  function shareHandler( e )
+  {
     var data = e.request.data,
         obj = {
           title: data.properties.title,
