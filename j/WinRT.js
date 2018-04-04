@@ -6,9 +6,6 @@
       ActivationKind = Windows.ApplicationModel.Activation.ActivationKind,
       StandardDataFormats = Windows.ApplicationModel.DataTransfer.StandardDataFormats;
   
-  App.addEventListener('activated',  activationHandler, false);
-  $output.innerHTML += 'Listening for activation\r\n';
-  
   function activationHandler( e )
   {
     $output.innerHTML += 'App activated\r\n';
@@ -81,5 +78,8 @@
     $output.innerHTML += JSON.stringify(obj) + '\r\n';
     console.log(obj);
   }
+
+  App.onactivated = activationHandler;
+  $output.innerHTML += 'Listening for activation\r\n';
 
 }(this, this.document, this.Windows));
