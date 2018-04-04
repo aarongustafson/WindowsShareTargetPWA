@@ -1,64 +1,23 @@
 (function(window, document, Windows){
 
-  let addWinJS = new Promise((resolve, reject) => {
-    $output.innerHTML += 'adding scripts\r\n';
-    var script = document.createElement('script');
-    script.src = '//Microsoft.WinJS.2.0/js/base.js';
-    document.body.appendChild(script.cloneNode(true));
+  var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
+  dataTransferManager.addEventListener("datarequested", shareHandler);
   
-    script.src = '//Microsoft.WinJS.2.0/js/ui.js';
-    document.body.appendChild(script);
-    $output.innerHTML += 'WinJS added\r\n';
-
-    resolve();
-  });
-  
-  function initialize()
-  {
-    addWinJS.then(() => {
-      $output.innerHTML += 'Adding activated event\r\n';
-      WinJS.Application.addEventListener("activated", activatedHandler, false);
-      $output.innerHTML += 'Adding shareready event\r\n';
-      WinJS.Application.addEventListener("shareready", shareReady, false);
-      $output.innerHTML += 'Events added, starting the app\r\n';
-      WinJS.Application.start();
-      $output.innerHTML += 'Started the application\r\n';
-    });
-    $output.innerHTML += 'Initialized\r\n';
-  }
-
-  function activatedHandler(e)
-  { 
-    $output.innerHTML += 'Activated\r\n';
-    if (e.detail.kind === Windows.ApplicationModel.Activation.ActivationKind.shareTarget)
-    { 
-      e.setPromise(WinJS.UI.processAll());
-
-        // We receive the ShareOperation object as part of the eventArgs 
-        shareOperation = e.detail.shareOperation; 
-
-        // We queue an asychronous event so that working with the ShareOperation object does not 
-        // block or delay the return of the activation handler. 
-        WinJS.Application.queueEvent({ type: "shareready" }); 
-    } 
-  } 
-
-  function shareReady(eventArgs)
-  { 
-    $output.innerHTML += 'Sharing\r\n';
-    var obj = {
-      title: shareOperation.data.properties.title,
-      description: shareOperation.data.properties.description
-    };
-
+  function shareHandler(e) {
+    var data = e.request.data,
+        obj = {
+          title: data.properties.title,
+          description: data.properties.description
+        };
+    
     if (shareOperation.data.properties.contentSourceWebLink)
     { 
-      obj.contentSourceWebLink = shareOperation.data.properties.contentSourceWebLink.rawUri;
+      obj.contentSourceWebLink = data.properties.contentSourceWebLink.rawUri;
     }
 
-    if (shareOperation.data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.text))
+    if (data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.text))
     {
-      shareOperation.data.getTextAsync()
+      data.getTextAsync()
         .done(function (text) { 
             obj.content = text; 
           },
@@ -67,9 +26,9 @@
             console.log(e); 
           }); 
     }
-    if (shareOperation.data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.webLink))
+    if (data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.webLink))
     { 
-      shareOperation.data.getWebLinkAsync()
+      data.getWebLinkAsync()
         .done(function (webLink) { 
             obj.weblink = webLink.rawUri;
           },
@@ -79,9 +38,9 @@
           });
     } 
     
-    if (shareOperation.data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.bitmap))
+    if (data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.bitmap))
     { 
-      shareOperation.data.getBitmapAsync()
+      data.getBitmapAsync()
         .done(function (bitmapStreamReference) {
             bitmapStreamReference.openReadAsync()
               .done(function (bitmapStream) { 
@@ -102,7 +61,5 @@
     
     console.log(obj);
   }
-
-  initialize();
 
 }(this, this.document, this.Windows));
