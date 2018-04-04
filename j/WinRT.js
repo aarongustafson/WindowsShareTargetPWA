@@ -79,9 +79,9 @@
     console.log(obj);
   }
 
-  if ( window.ActivationEvent )
+  if ( 'ActivationEvent' in window )
   {
-    activationHandler(e);
+    activationHandler(window.ActivationEvent);
   }
 
 }(this, this.document, this.Windows));
