@@ -1,14 +1,14 @@
 (function(window, document, Windows){
 
   let addWinJS = new Promise((resolve, reject) => {
-    console.log('adding scripts');
+    $output.innerHTML += 'adding scripts';
     var script = document.createElement('script');
     script.src = '//Microsoft.WinJS.2.0/js/base.js';
     document.body.appendChild(script.cloneNode(true));
   
     script.src = '//Microsoft.WinJS.2.0/js/ui.js';
     document.body.appendChild(script);
-    console.log('WinJS added');
+    $output.innerHTML += 'WinJS added';
   });
   
   function initialize()
@@ -18,7 +18,7 @@
       WinJS.Application.addEventListener("shareready", shareReady, false);
       WinJS.Application.start();
     });
-    console.log('Initialized');
+    $output.innerHTML += 'Initialized';
   }
 
   function activatedHandler(e)
@@ -55,7 +55,8 @@
             obj.content = text; 
           },
           function (e) { 
-            console.log('Error retrieving text data', e); 
+            $output.innerHTML += 'Error retrieving text data';
+            console.log(e); 
           }); 
     }
     if (shareOperation.data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.webLink))
@@ -65,7 +66,8 @@
             obj.weblink = webLink.rawUri;
           },
           function (e) { 
-            console.log('Error retrieving weblink data', e); 
+            $output.innerHTML += 'Error retrieving weblink data'
+            console.log(e); 
           });
     } 
     
@@ -80,11 +82,13 @@
                   } 
                 },
                 function (e) { 
-                  console.log('Error reading image stream', e); 
+                  $output.innerHTML += 'Error reading image stream'
+                  console.log(e); 
                 }); 
           },
           function (e) { 
-            console.log('Error retrieving image data', e); 
+            $output.innerHTML += 'Error retrieving image data'
+            console.log(e);
           }); 
     }
     
