@@ -1,10 +1,11 @@
 (function(window, document, Windows){
 
   $output.innerHTML += 'Getting the dataTransferManager\r\n';
-  var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
-  console.log(dataTransferManager);
-  dataTransferManager.addEventListener("sharetargetactivated", shareHandler);
-  $output.innerHTML += 'sharetargetactivated event handled\r\n';
+  var app = Windows.UI.WebUI.WebUIApplication;
+  // var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
+  // app.addEventListener("sharetargetactivated", shareHandler);
+  app.addEventListener("shareactivated", shareHandler);
+  $output.innerHTML += 'shareactivated event handled\r\n';
   
   function shareHandler(e) {
     $output.innerHTML += 'Handling the share\r\n';
