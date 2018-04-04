@@ -8,6 +8,12 @@ if ( 'Windows' in window && 'caches' in window )
 {
   $output.innerHTML += 'This is an installed PWA\r\n';
   
+  $output.innerHTML += 'Listening for App activation\r\n';
+  Windows.UI.WebUI.WebUIApplication.addEventListener('activated',function(e){
+    $output.innerHTML += 'Storing activation event for later\r\n';
+    window.ActivationEvent = e;
+  });
+  
   var WinRT_js_file = '/j/WinRT.js',
       cache_name = 'WinRT';
   

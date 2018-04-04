@@ -1,6 +1,6 @@
 (function(window, document, Windows){
 
-  $output.innerHTML += 'Setting up the application\r\n';
+  $output.innerHTML += 'Loading the WinRT scripts\r\n';
 
   var App = Windows.UI.WebUI.WebUIApplication,
       ActivationKind = Windows.ApplicationModel.Activation.ActivationKind,
@@ -79,7 +79,9 @@
     console.log(obj);
   }
 
-  App.onactivated = activationHandler;
-  $output.innerHTML += 'Listening for activation\r\n';
+  if ( window.ActivationEvent )
+  {
+    activationHandler(e);
+  }
 
 }(this, this.document, this.Windows));
