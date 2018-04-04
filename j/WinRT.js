@@ -1,18 +1,23 @@
 (function(window, document, Windows){
 
   $output.innerHTML += 'Getting the dataTransferManager\r\n';
-  var app = Windows.UI.WebUI.WebUIApplication;
-  // var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
-  // app.addEventListener("sharetargetactivated", shareHandler);
-  app.addEventListener("activated", function(){
-    $output.innerHTML += 'activated event handled\r\n';
-    app.addEventListener("shareactivated", shareHandler);
-    $output.innerHTML += 'shareactivated event handled\r\n';
+  var app = Windows.UI.WebUI.WebUIApplication,
+      ActivationKind = Windows.ApplicationModel.Activation.ActivationKind,
+      StandardDataFormats = Windows.ApplicationModel.DataTransfer.StandardDataFormats;
+  
+  app.addEventListener("activated", function(e){
+    $output.innerHTML += 'App activated\r\n';
+    console.log(e);
+    
+    if ( e.kind == ActivationKind.shareTarget )
+    {
+      $output.innerHTML += 'Handling the share\r\n';
+      shareHandler(e);
+    }
   });
   
   
   function shareHandler(e) {
-    $output.innerHTML += 'Handling the share\r\n';
     console.log(e);
     var data = e.request.data,
         obj = {
@@ -25,8 +30,9 @@
       obj.contentSourceWebLink = data.properties.contentSourceWebLink.rawUri;
     }
 
-    if (data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.text))
+    if (data.contains(StandardDataFormats.text))
     {
+      $output.innerHTML += 'Handling the share\r\n';
       data.getTextAsync()
         .done(function (text) { 
             obj.content = text; 
@@ -36,7 +42,7 @@
             console.log(e); 
           }); 
     }
-    if (data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.webLink))
+    if (data.contains(StandardDataFormats.webLink))
     { 
       data.getWebLinkAsync()
         .done(function (webLink) { 
@@ -48,7 +54,7 @@
           });
     } 
     
-    if (data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.bitmap))
+    if (data.contains(StandardDataFormats.bitmap))
     { 
       data.getBitmapAsync()
         .done(function (bitmapStreamReference) {
@@ -69,6 +75,7 @@
           }); 
     }
     
+    $output.innerHTML += JSON.stringify(obj) + '\r\n';
     console.log(obj);
   }
 
