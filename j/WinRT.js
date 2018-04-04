@@ -1,14 +1,14 @@
 (function(window, document, Windows){
 
   let addWinJS = new Promise((resolve, reject) => {
-    $output.innerHTML += 'adding scripts';
+    $output.innerHTML += 'adding scripts\r\n';
     var script = document.createElement('script');
     script.src = '//Microsoft.WinJS.2.0/js/base.js';
     document.body.appendChild(script.cloneNode(true));
   
     script.src = '//Microsoft.WinJS.2.0/js/ui.js';
     document.body.appendChild(script);
-    $output.innerHTML += 'WinJS added';
+    $output.innerHTML += 'WinJS added\r\n';
   });
   
   function initialize()
@@ -18,11 +18,12 @@
       WinJS.Application.addEventListener("shareready", shareReady, false);
       WinJS.Application.start();
     });
-    $output.innerHTML += 'Initialized';
+    $output.innerHTML += 'Initialized\r\n';
   }
 
   function activatedHandler(e)
   { 
+    $output.innerHTML += 'Activated\r\n';
     if (e.detail.kind === Windows.ApplicationModel.Activation.ActivationKind.shareTarget)
     { 
       e.setPromise(WinJS.UI.processAll());
@@ -38,6 +39,7 @@
 
   function shareReady(eventArgs)
   { 
+    $output.innerHTML += 'Sharing\r\n';
     var obj = {
       title: shareOperation.data.properties.title,
       description: shareOperation.data.properties.description
