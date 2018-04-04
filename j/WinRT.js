@@ -25,9 +25,10 @@
           description: data.properties.description
         };
     
-    if (shareOperation.data.properties.contentSourceWebLink)
+    if (data.properties.contentSourceWebLink)
     { 
-      obj.contentSourceWebLink = data.properties.contentSourceWebLink.rawUri;
+      obj.weblink = data.properties.contentSourceWebLink.rawUri;
+      $output.innerHTML += JSON.stringify(obj) + '\r\n';
     }
 
     if (data.contains(StandardDataFormats.text))
@@ -35,18 +36,21 @@
       $output.innerHTML += 'Handling the share\r\n';
       data.getTextAsync()
         .done(function (text) { 
-            obj.content = text; 
+            obj.text = text;
+            $output.innerHTML += JSON.stringify(obj) + '\r\n';
           },
           function (e) { 
             $output.innerHTML += 'Error retrieving text data';
             console.log(e); 
           }); 
     }
+
     if (data.contains(StandardDataFormats.webLink))
     { 
       data.getWebLinkAsync()
         .done(function (webLink) { 
             obj.weblink = webLink.rawUri;
+            $output.innerHTML += JSON.stringify(obj) + '\r\n';
           },
           function (e) { 
             $output.innerHTML += 'Error retrieving weblink data';
@@ -62,6 +66,7 @@
               .done(function (bitmapStream) { 
                   if (bitmapStream) { 
                     obj.image_src = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
+                    $output.innerHTML += JSON.stringify(obj) + '\r\n';
                   } 
                 },
                 function (e) { 
@@ -74,9 +79,7 @@
             console.log(e);
           }); 
     }
-    
-    $output.innerHTML += JSON.stringify(obj) + '\r\n';
-    console.log(obj);
+
   }
 
   if ( 'ActivationEvent' in window )
