@@ -80,6 +80,22 @@
           }); 
     }
 
+    if (data.contains(StandardDataFormats.storageItems))
+    { 
+      data.getStorageItemsAsync()
+        .then(function (storageItems) {
+          obj.files = [];
+
+          var length = storageItems.size;
+          while ( length-- )
+          {
+            obj.files.push( storageItems.getAt(length).name );
+          }
+
+          $output.innerHTML += JSON.stringify(obj) + '\r\n';
+        });
+    }
+
   }
 
   if ( 'ActivationEvent' in window )
