@@ -16,8 +16,9 @@
   function initialize()
   {
     addWinJS.then(() => {
-      $output.innerHTML += 'Adding events\r\n';
+      $output.innerHTML += 'Adding activated event\r\n';
       WinJS.Application.addEventListener("activated", activatedHandler, false);
+      $output.innerHTML += 'Adding shareready event\r\n';
       WinJS.Application.addEventListener("shareready", shareReady, false);
       $output.innerHTML += 'Events added, starting the app\r\n';
       WinJS.Application.start();
