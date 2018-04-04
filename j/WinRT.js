@@ -3,8 +3,8 @@
   $output.innerHTML += 'Getting the dataTransferManager\r\n';
   var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
   console.log(dataTransferManager);
-  dataTransferManager.addEventListener("datarequested", shareHandler);
-  $output.innerHTML += 'datarequested event handled\r\n';
+  dataTransferManager.addEventListener("sharetargetactivated", shareHandler);
+  $output.innerHTML += 'sharetargetactivated event handled\r\n';
   
   function shareHandler(e) {
     $output.innerHTML += 'Handling the share\r\n';
