@@ -38,18 +38,17 @@
             .then(bitmapStream => { 
               if (bitmapStream) { 
                 $output.innerHTML += 'Getting bitmap data\r\n';
-                blob_url = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
+                var blob_url = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
                 if ( is_img )
                 {
                   $output.innerHTML += 'Creating the image\r\n';
-                  var $img = $image.clone(true);
+                  var $img = $image.cloneNode(true);
                   $img.src = blob_url;
                   $images.appendChild($image);
                 }
               }
               // update the array
-              blobs.push(blob_url);
-              return true;
+              return blobs.push(blob_url);
             })
             .catch(e => {
               $output.innerHTML += 'Error: ' + e + '\r\n';
@@ -104,7 +103,7 @@
     { 
       $output.innerHTML += 'Bitmap share\r\n';
       data.getBitmapAsync()
-        .then(file => readFile(file))
+        .then(file => { return readFile(file); })
         .then(() => {
           obj.files = blobs;
           $output.innerHTML += JSON.stringify(obj) + '\r\n';
