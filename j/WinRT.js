@@ -44,7 +44,7 @@
                   $output.innerHTML += 'Creating the image\r\n';
                   var $img = $image.cloneNode(true);
                   $img.src = blob_url;
-                  $images.appendChild($image);
+                  $images.appendChild($img);
                 }
               }
               // update the array
