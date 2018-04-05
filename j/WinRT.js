@@ -4,8 +4,12 @@
 
   var App = Windows.UI.WebUI.WebUIApplication,
       ActivationKind = Windows.ApplicationModel.Activation.ActivationKind,
-      StandardDataFormats = Windows.ApplicationModel.DataTransfer.StandardDataFormats;
+      StandardDataFormats = Windows.ApplicationModel.DataTransfer.StandardDataFormats,
+      $images = document.createElement('div'),
+      $image = document.createElement('img');
   
+  document.body.appendChild($images);
+
   function activationHandler( e )
   {
     $output.innerHTML += 'App activated\r\n';
@@ -66,6 +70,9 @@
               .done(function (bitmapStream) { 
                   if (bitmapStream) { 
                     obj.image_src = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
+                    var $img = $image.clone(true);
+                    $img.src = obj.image_src;
+                    $images.appendChild($image);
                     $output.innerHTML += JSON.stringify(obj) + '\r\n';
                   } 
                 },
@@ -82,27 +89,43 @@
 
     if (data.contains(StandardDataFormats.storageItems))
     {
-      data.getStorageItemsAsync()
-        .then(function (storageItems) {
-          var blobs = [];
-          const files = storageItems.map(async (file) => {
-              
-            await file.openReadAsync()
-                .done(bitmapStream => { 
-                    console.log('bitmapStream',bitmapStream);
-                    if (bitmapStream) { 
-                        blob_url = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
-                    }
-                    console.log('blob_url', blob_url);
-                    blobs.push(blob_url);
-                });
-          });
+      var blobs = [];
+        
+      function readStorageItems( storageItems )
+      {
+        return Promise.all(storageItems.map(function (item) {
+          // read the file
+          return readFile(item);
+        }));
+      }
 
-          Promise.all(files)
-            .then(function(){
-              obj.files = files;
-              $output.innerHTML += JSON.stringify(obj) + '\r\n';
-            });
+      function readFile(file)
+      {
+        var is_img = file.contentType.indexOf('image') > -1;
+        return file.openReadAsync()
+                .then(bitmapStream => { 
+                  if (bitmapStream) { 
+                    blob_url = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
+                    if ( is_img )
+                    {
+                      var $img = $image.clone(true);
+                      $img.src = blob_url;
+                      $images.appendChild($image);
+                    }
+                  }
+                  // update the array
+                  blobs.push(blob_url);
+                });
+      }
+      
+      // get the storage items
+      data.getStorageItemsAsync()
+        // loop the storage items
+        .then(storageItems => readStorageItems(storageItems))
+        // then get the blob
+        .then(() => {
+          obj.files = blobs;
+          $output.innerHTML += JSON.stringify(obj) + '\r\n';
         });
 
   }
