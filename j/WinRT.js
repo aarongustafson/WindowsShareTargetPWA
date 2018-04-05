@@ -33,28 +33,32 @@
   function readFile(file)
   {
     $output.innerHTML += 'Reading the file ' + file.name + '\r\n';
-    var is_img = file.contentType.indexOf('image') > -1;
-    return file.openReadAsync()
-            .then(bitmapStream => { 
-              if (bitmapStream) { 
-                $output.innerHTML += 'Getting bitmap data\r\n';
-                var blob_url = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
-                if ( is_img )
-                {
-                  $output.innerHTML += 'Creating the image\r\n';
-                  var $img = $image.cloneNode(true);
-                  $img.src = blob_url;
-                  $images.appendChild($img);
-                }
-              }
-              // update the array
-              return blobs.push(blob_url);
-            })
-            .catch(e => {
-              $output.innerHTML += 'Error: ' + e + '\r\n';
-            });
+    return new Promise((resolve, reject) => {
+      var is_img = file.contentType.indexOf('image') > -1,
+          blob_url,
+          $img;
+      file.openReadAsync()
+        .then(bitmapStream => { 
+          if (bitmapStream) { 
+            $output.innerHTML += 'Getting bitmap data\r\n';
+            blob_url = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
+            if ( is_img )
+            {
+              $output.innerHTML += 'Creating the image\r\n';
+              $img = $image.cloneNode(true);
+              $img.src = blob_url;
+              $images.appendChild($img);
+            }
+            blobs.push(blob_url)
+          }
+          // update the array
+          resolve(blobs);
+        })
+        .catch(e => {
+          $output.innerHTML += 'Error: ' + e + '\r\n';
+        });
+    });
   }
-
 
   function shareHandler( e )
   {
