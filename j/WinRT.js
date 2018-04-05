@@ -49,6 +49,10 @@
               }
               // update the array
               blobs.push(blob_url);
+              return true;
+            })
+            .catch(e => {
+              $output.innerHTML += 'Error: ' + e + '\r\n';
             });
   }
 
@@ -104,6 +108,9 @@
         .then(() => {
           obj.files = blobs;
           $output.innerHTML += JSON.stringify(obj) + '\r\n';
+        })
+        .catch(e => {
+          $output.innerHTML += 'Error: ' + e + '\r\n';
         });
     }
 
@@ -119,7 +126,10 @@
         .then(() => {
           obj.files = blobs;
           $output.innerHTML += JSON.stringify(obj) + '\r\n';
-        });
+        })
+        .catch(e => {
+          $output.innerHTML += 'Error: ' + e + '\r\n';
+        });;
     }
 
   }
