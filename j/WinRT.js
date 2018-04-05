@@ -120,7 +120,7 @@
       // get the storage items
       data.getStorageItemsAsync()
         // loop the storage items
-        .then(storageItems => readStorageItems(storageItems))
+        .then(storageItems => { return readStorageItems(storageItems); })
         // then get the blob
         .then(() => {
           obj.files = blobs;
