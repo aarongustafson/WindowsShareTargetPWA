@@ -21,6 +21,34 @@
     }
   }
 
+  function readStorageItems( storageItems )
+  {
+    return Promise.all(storageItems.map(function (item) {
+      // read the file
+      return readFile(item);
+    }));
+  }
+
+  function readFile(file)
+  {
+    var is_img = file.contentType.indexOf('image') > -1;
+    return file.openReadAsync()
+            .then(bitmapStream => { 
+              if (bitmapStream) { 
+                blob_url = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
+                if ( is_img )
+                {
+                  var $img = $image.clone(true);
+                  $img.src = blob_url;
+                  $images.appendChild($image);
+                }
+              }
+              // update the array
+              blobs.push(blob_url);
+            });
+  }
+
+
   function shareHandler( e )
   {
     var data = e.shareOperation.data,
@@ -90,33 +118,6 @@
     if (data.contains(StandardDataFormats.storageItems))
     {
       var blobs = [];
-        
-      function readStorageItems( storageItems )
-      {
-        return Promise.all(storageItems.map(function (item) {
-          // read the file
-          return readFile(item);
-        }));
-      }
-
-      function readFile(file)
-      {
-        var is_img = file.contentType.indexOf('image') > -1;
-        return file.openReadAsync()
-                .then(bitmapStream => { 
-                  if (bitmapStream) { 
-                    blob_url = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
-                    if ( is_img )
-                    {
-                      var $img = $image.clone(true);
-                      $img.src = blob_url;
-                      $images.appendChild($image);
-                    }
-                  }
-                  // update the array
-                  blobs.push(blob_url);
-                });
-      }
       
       // get the storage items
       data.getStorageItemsAsync()
@@ -127,6 +128,7 @@
           obj.files = blobs;
           $output.innerHTML += JSON.stringify(obj) + '\r\n';
         });
+    }
 
   }
 
