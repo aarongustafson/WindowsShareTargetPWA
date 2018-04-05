@@ -19,4 +19,4 @@ Open the browser of your choice and hit the "Share" charm. Select the Test PWA f
 
 ## Testing an image
 
-In File Explorer, right click an image (or multiple) and Share it. Choose the Test PWA as the target. You should see the sharing web page and the image(s) should be displayed at the bottom.
+In File Explorer, right click an image (or multiple) and Share it. Supported formats include JPG, PNG, and GIF. Choose the Test PWA as the target. You should see the sharing web page and the image(s) should be displayed at the bottom.
