@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:build="http://schemas.microsoft.com/developer/appx/2015/build" IgnorableNamespaces="uap mp build">
-	<Identity Name="FOOBAR" Publisher="CN=2079F891-4F1B-4C35-9488-2582FB598793" Version="1.0.4.0" ProcessorArchitecture="neutral"/>
-	<!--Identity Name="9E2F88E3.Twitter" Publisher="CN=INSERT-YOUR-PACKAGE-IDENTITY-PUBLISHER-HERE" Version="1.0.0.0" ProcessorArchitecture="neutral"/--> 
-	<mp:PhoneIdentity PhoneProductId="2559839f-3d2f-0fd8-70e3-34ae9969f801" PhonePublisherId="00000000-0000-0000-0000-000000000000"/> 
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:build="http://schemas.microsoft.com/developer/appx/2015/build" IgnorableNamespaces="uap mp build"> 
+	<Identity Name="NEW-IDENTITY-NAME-HERE" Publisher="CN=INSERT-YOUR-PACKAGE-IDENTITY-PUBLISHER-HERE" Version="1.0.0.1" ProcessorArchitecture="neutral"/> 
+	<mp:PhoneIdentity PhoneProductId="a964091d-57a9-1738-f240-b9bcf237ca12" PhonePublisherId="00000000-0000-0000-0000-000000000000"/> 
 
 	<build:Metadata>
 		<build:Item Name="GenerationTool" Version="pwabuilder-api"/>
@@ -11,13 +10,14 @@
     <build:Item Name="PlatformPackage" Value="pwabuilder-windows10"/>
     <build:Item Name="PlatformVersion" Version="2.0.3-rc.1"/>
 		<build:Item Name="GeneratedFrom" Value="Website Wizard"/>
-		<build:Item Name="GenerationDate" Value="2018-03-22 15:53:20 Z"/>
+		<build:Item Name="GenerationDate" Value="2018-04-03 00:27:22 Z"/>
+		<build:Item Name="GeneratedURL" Value="https://sharetargetpwa.azurewebsites.net/manifest.json"/>
 	</build:Metadata>
 
 	<Properties> 
-		<DisplayName>Test</DisplayName> 
-    	<PublisherDisplayName>Test</PublisherDisplayName>
-    	<Logo>images\StoreLogo.png</Logo> 
+		<DisplayName>WinShrTrgt</DisplayName> 
+    <PublisherDisplayName>Test</PublisherDisplayName>
+    <Logo>images\StoreLogo.png</Logo> 
 	</Properties> 
 
 	<Dependencies> 
@@ -25,11 +25,11 @@
 	</Dependencies> 
 
 	<Resources>
-		<Resource Language="en-us"/> 
-	</Resources> 
+	<Resource Language="en-us"/> 
+	 </Resources> 
 
 	<Applications> 
-		<Application Id="Test" StartPage="https://sharetargetpwa.azurewebsites.net/"> 
+		<Application Id="WinShrTrgt" StartPage="https://sharetargetpwa.azurewebsites.net/"> 
 			<Extensions>
 				<uap:Extension Category="windows.shareTarget">
 					<uap:ShareTarget>
@@ -45,7 +45,7 @@
 					</uap:ShareTarget>
 				</uap:Extension>
 			</Extensions>
-			<uap:VisualElements DisplayName="Twitter" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png" Description="Twitter" BackgroundColor="transparent"> 
+			<uap:VisualElements DisplayName="WinShrTrgt" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png" Description="Just a test" BackgroundColor="transparent"> 
 				<uap:InitialRotationPreference> 
 					<uap:Rotation Preference="portrait"/> 
 				</uap:InitialRotationPreference> 
@@ -59,6 +59,7 @@
 
 	<Capabilities>
 		<Capability Name="internetClient"/>
+		
 	</Capabilities>
 
 </Package>
