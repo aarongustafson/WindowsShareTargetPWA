@@ -6,7 +6,8 @@
       ActivationKind = Windows.ApplicationModel.Activation.ActivationKind,
       StandardDataFormats = Windows.ApplicationModel.DataTransfer.StandardDataFormats,
       $images = document.createElement('div'),
-      $image = document.createElement('img');
+      $image = document.createElement('img'),
+      blobs = [];
   
   document.body.appendChild($images);
 
@@ -31,13 +32,16 @@
 
   function readFile(file)
   {
+    $output.innerHTML += 'Reading the file ' + file.name + '\r\n';
     var is_img = file.contentType.indexOf('image') > -1;
     return file.openReadAsync()
             .then(bitmapStream => { 
               if (bitmapStream) { 
+                $output.innerHTML += 'Getting bitmap data\r\n';
                 blob_url = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
                 if ( is_img )
                 {
+                  $output.innerHTML += 'Creating the image\r\n';
                   var $img = $image.clone(true);
                   $img.src = blob_url;
                   $images.appendChild($image);
@@ -59,13 +63,14 @@
     
     if (data.properties.contentSourceWebLink)
     { 
+      $output.innerHTML += 'contentSourceWebLink share\r\n';
       obj.weblink = data.properties.contentSourceWebLink.rawUri;
       $output.innerHTML += JSON.stringify(obj) + '\r\n';
     }
 
     if (data.contains(StandardDataFormats.text))
     {
-      $output.innerHTML += 'Handling the share\r\n';
+      $output.innerHTML += 'Text share\r\n';
       data.getTextAsync()
         .done(function (text) { 
             obj.text = text;
@@ -79,6 +84,7 @@
 
     if (data.contains(StandardDataFormats.webLink))
     { 
+      $output.innerHTML += 'Weblink share\r\n';
       data.getWebLinkAsync()
         .done(function (webLink) { 
             obj.weblink = webLink.rawUri;
@@ -92,32 +98,18 @@
     
     if (data.contains(StandardDataFormats.bitmap))
     { 
+      $output.innerHTML += 'Bitmap share\r\n';
       data.getBitmapAsync()
-        .done(function (bitmapStreamReference) {
-            bitmapStreamReference.openReadAsync()
-              .done(function (bitmapStream) { 
-                  if (bitmapStream) { 
-                    obj.image_src = URL.createObjectURL(bitmapStream, { oneTimeOnly: true });
-                    var $img = $image.clone(true);
-                    $img.src = obj.image_src;
-                    $images.appendChild($image);
-                    $output.innerHTML += JSON.stringify(obj) + '\r\n';
-                  } 
-                },
-                function (e) { 
-                  $output.innerHTML += 'Error reading image stream';
-                  console.log(e); 
-                }); 
-          },
-          function (e) { 
-            $output.innerHTML += 'Error retrieving image data';
-            console.log(e);
-          }); 
+        .then(file => readFile(file))
+        .then(() => {
+          obj.files = blobs;
+          $output.innerHTML += JSON.stringify(obj) + '\r\n';
+        });
     }
 
     if (data.contains(StandardDataFormats.storageItems))
     {
-      var blobs = [];
+      $output.innerHTML += 'File share\r\n';
       
       // get the storage items
       data.getStorageItemsAsync()
